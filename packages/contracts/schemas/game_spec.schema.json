@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "adhdquest/game_spec",
+  "title": "GameSpec",
+  "description": "Internal spec produced by Pipeline 1's strong-model node and consumed by the Daytona game-builder. Not a cross-person contract, but shared between the game-spec node and the game template library.",
+  "type": "object",
+  "required": ["session_id", "levels", "replan", "attention"],
+  "properties": {
+    "session_id": { "type": "string", "format": "uuid" },
+    "estimated_session_minutes": { "type": "number" },
+    "levels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["level_index", "question_id", "topic", "difficulty", "mechanic"],
+        "properties": {
+          "level_index": { "type": "integer", "minimum": 0 },
+          "question_id": { "type": "string", "format": "uuid" },
+          "question_text": { "type": "string" },
+          "topic": {
+            "enum": ["addition", "subtraction", "multiplication", "division", "fractions", "decimals", "word_problem"]
+          },
+          "difficulty": { "type": "integer", "minimum": 1, "maximum": 5 },
+          "mechanic": { "enum": ["maze", "matching", "quest", "speed_round", "puzzle"] },
+          "is_attention_checkpoint": { "type": "boolean", "default": false }
+        }
+      }
+    },
+    "replan": {
+      "type": "object",
+      "properties": {
+        "fail_threshold": { "type": "integer", "default": 3 }
+      }
+    },
+    "attention": {
+      "type": "object",
+      "properties": {
+        "checkpoint_interval_levels": { "type": "integer" },
+        "baseline_minutes": { "type": "number" }
+      }
+    }
+  }
+}

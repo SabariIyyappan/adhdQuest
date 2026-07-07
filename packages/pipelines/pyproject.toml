@@ -1,0 +1,14 @@
+[project]
+name = "adhdquest-pipelines"
+version = "0.1.0"
+description = "ADHDQuest RocketRide pipelines + Daytona game runtime (Person B)."
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+# Tests import `pipelines.*` and `backend.*`; add the packages/ root to the path.
+pythonpath = [".."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

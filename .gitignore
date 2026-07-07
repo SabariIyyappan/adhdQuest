@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.Python
+
+# Build output
+dist/
+build/
+*.egg-info/
+.next/
+out/
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+*.pem
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Test / coverage
+.pytest_cache/
+.coverage
+coverage/
+htmlcov/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Daytona / sandbox artifacts
+.daytona/
+sandbox_out/
+.rocketride/

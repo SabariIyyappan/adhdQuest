@@ -1,0 +1,9 @@
+# RocketRide pipeline runtime dependencies (Person B).
+rocketride            # pipeline SDK / custom-node framework
+daytona-sdk          # sandbox lifecycle
+cognee               # child memory (shares Neo4j backend with the graph schema)
+neo4j                # bolt driver + GDS procedure calls
+httpx                # Butterbase REST + serverless function calls
+pydantic>=2          # contract validation against packages/contracts/schemas
+python-dotenv        # local env loading
+pytest               # node unit tests

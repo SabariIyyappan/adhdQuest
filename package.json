@@ -1,0 +1,15 @@
+{
+  "name": "adhdquest",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Agentic learning companion for ADHD children. Monorepo root.",
+  "workspaces": [
+    "packages/contracts",
+    "packages/frontend"
+  ],
+  "scripts": {
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "dev:frontend": "npm run dev -w @adhdquest/frontend",
+    "build:frontend": "npm run build -w @adhdquest/frontend"
+  }
+}
