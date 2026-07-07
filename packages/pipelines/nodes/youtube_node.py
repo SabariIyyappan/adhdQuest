@@ -9,13 +9,11 @@ from __future__ import annotations
 
 from typing import Any
 
-from ..common.butterbase import Butterbase
-
-_bb = Butterbase()
+from ..common import providers
 
 
 def run(concept_tag: str, remaining_attention_seconds: int, grade_level: int) -> dict[str, Any] | None:
-    resp = _bb.call_function(
+    resp = providers.get_butterbase().call_function(
         "youtube-lookup",
         {
             "concept_tag": concept_tag,

@@ -10,12 +10,10 @@ import json
 from dataclasses import dataclass
 from typing import Any
 
-from daytona_sdk import Daytona  # type: ignore
-
+from ..common import ai_gateway, providers
 from ..common.config import settings
 
 _MAX_BUILD_ITERATIONS = 3
-_daytona = Daytona(api_key=settings.daytona_api_key, api_url=settings.daytona_api_url)
 
 
 @dataclass
@@ -27,7 +25,8 @@ class BuildResult:
 def build_game(game_spec: dict[str, Any], game_code: str) -> BuildResult:
     """Create a warm sandbox from the snapshot, write the game, validate it runs,
     and return a live preview URL. A critic agent repairs failures up to 3 times."""
-    sandbox = _daytona.create(
+    daytona = providers.get_daytona()
+    sandbox = daytona.create(
         snapshot=settings.daytona_snapshot,
         language="python",
         resources={"cpu": 1, "memory": 2, "disk": 4},
@@ -49,17 +48,24 @@ def build_game(game_spec: dict[str, Any], game_code: str) -> BuildResult:
 
 def rewrite_level(sandbox_id: str, level_index: int, level_code: str) -> None:
     """Pipeline 2 — reconnect to the warm sandbox and hot-reload a single level."""
-    sandbox = _daytona.get(sandbox_id)
+    sandbox = providers.get_daytona().get(sandbox_id)
     sandbox.fs.upload_file(level_code.encode(), f"level_{level_index}.py")
     sandbox.process.exec(f"python reload_level.py {level_index}")
 
 
 def stop(sandbox_id: str) -> None:
     """Pipeline 3 — pause the sandbox at session end, preserving filesystem state."""
-    _daytona.get(sandbox_id).stop()
+    providers.get_daytona().get(sandbox_id).stop()
 
 
 def _critic_repair(code: str, stderr: str) -> str:
-    """Ask the strong model to fix the game code given the runtime error."""
-    # TODO(Person B): call Butterbase AI gateway (task=game_spec tier) with code+stderr.
-    raise NotImplementedError("bind critic agent to AI gateway")
+    """Ask the strong model to fix the game code given the runtime error.
+
+    Routes through the Butterbase AI gateway (strong tier). Offline, the gateway's
+    deterministic fallback annotates the code so the next validate attempt proceeds.
+    """
+    return ai_gateway.generate(
+        "game_code_repair",
+        system="Fix the Python game so `python game.py --validate` exits 0. Return only code.",
+        context={"code": code, "stderr": stderr},
+    )

@@ -9,15 +9,14 @@ from __future__ import annotations
 
 from typing import Any
 
-from ..common.butterbase import Butterbase
+from ..common import providers
 from ..nodes import cognee_nodes, daytona_node, neo4j_gds_node
 from . import assemble, report
-
-_bb = Butterbase()
 
 
 def run(request: dict[str, Any]) -> dict[str, Any]:
     """request = {child_id, session_id}"""
+    _bb = providers.get_butterbase()
     child_id = request["child_id"]
     session_id = request["session_id"]
 

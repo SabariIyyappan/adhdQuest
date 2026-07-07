@@ -10,18 +10,19 @@ from __future__ import annotations
 import asyncio
 from typing import Any
 
-# The backend package is importable in the pipeline env (installed as a path dep).
-from backend.cognee import client as cognee_client
+from ..common import providers
 
 
 def recall(child_id: str) -> dict[str, Any]:
     """Pipeline 1 step 4 — prior behavioral context for the game-spec node.
     Returns a well-formed empty context on a cold start (first session)."""
+    cognee_client = providers.get_cognee()
     return asyncio.run(cognee_client.recall(child_id))
 
 
 def ingest(session_json: dict[str, Any], child_id: str) -> None:
     """Pipeline 3 step 2 — remember -> cognify -> memify, in order."""
+    cognee_client = providers.get_cognee()
 
     async def _run() -> None:
         await cognee_client.remember(session_json, child_id)

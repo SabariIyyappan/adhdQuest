@@ -1,0 +1,7 @@
+# Local-first dev deps — everything needed to run the mocks, tests, check.py, and
+# run_local.py WITHOUT any live sponsor SDK. This is the fast path while Person A's
+# services aren't wired up yet.
+httpx
+jsonschema
+pytest
+pypdf

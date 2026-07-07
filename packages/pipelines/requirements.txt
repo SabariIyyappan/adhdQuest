@@ -1,4 +1,8 @@
 # RocketRide pipeline runtime dependencies (Person B).
+#
+# The four sponsor SDKs are only needed for LIVE runs — the DI seam
+# (common/providers.py) keeps every import safe without them, and the in-memory
+# mocks (pipelines/mocks) cover them for local development + the test suite.
 rocketride            # pipeline SDK / custom-node framework
 daytona-sdk          # sandbox lifecycle
 cognee               # child memory (shares Neo4j backend with the graph schema)
@@ -6,4 +10,8 @@ neo4j                # bolt driver + GDS procedure calls
 httpx                # Butterbase REST + serverless function calls
 pydantic>=2          # contract validation against packages/contracts/schemas
 python-dotenv        # local env loading
-pytest               # node unit tests
+
+# --- Local dev / test only (no live sponsors needed) ---
+pytest               # node + pipeline unit/stress tests
+jsonschema           # validate game spec against contracts/schemas
+pypdf                # optional: offline OCR of real PDF bytes (else use RocketRide OCR)
