@@ -10,11 +10,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from ..common.butterbase import Butterbase
+from ..common import providers
 from ..nodes import cognee_nodes, daytona_node, ner_node, ocr_node
 from . import game_spec, prompts
-
-_bb = Butterbase()
 
 
 def run(request: dict[str, Any]) -> dict[str, Any]:
@@ -54,7 +52,7 @@ def run(request: dict[str, Any]) -> dict[str, Any]:
     from . import output
 
     return output.publish(
-        bb=_bb,
+        bb=providers.get_butterbase(),
         child_id=child_id,
         assignment_id=assignment_id,
         spec=spec,

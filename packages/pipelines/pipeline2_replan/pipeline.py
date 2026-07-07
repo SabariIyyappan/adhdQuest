@@ -9,11 +9,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from ..common.butterbase import Butterbase
+from ..common import providers
 from ..nodes import daytona_node, neo4j_gds_node, youtube_node
 from . import strategy
-
-_bb = Butterbase()
 
 
 def run(request: dict[str, Any]) -> dict[str, Any]:
@@ -57,7 +55,7 @@ def run(request: dict[str, Any]) -> dict[str, Any]:
     from . import output
 
     return output.publish(
-        bb=_bb,
+        bb=providers.get_butterbase(),
         child_id=child_id,
         session_id=session_id,
         level_index=level_index,
@@ -67,5 +65,5 @@ def run(request: dict[str, Any]) -> dict[str, Any]:
 
 
 def _sandbox_id(child_id: str) -> str:
-    state = _bb.kv_get(f"session:{child_id}:active") or {}
+    state = providers.get_butterbase().kv_get(f"session:{child_id}:active") or {}
     return state["sandbox_id"]

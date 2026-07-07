@@ -11,20 +11,11 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
-from neo4j import GraphDatabase
-
-from ..common.config import settings
+from ..common import providers
 
 _QUERIES_FILE = (
     Path(__file__).resolve().parents[2] / "backend" / "neo4j" / "queries.cypher"
 )
-
-
-@lru_cache(maxsize=1)
-def _driver():  # noqa: ANN202 - neo4j Driver
-    return GraphDatabase.driver(
-        settings.neo4j_uri, auth=(settings.neo4j_user, settings.neo4j_password)
-    )
 
 
 @lru_cache(maxsize=1)
@@ -39,7 +30,7 @@ def _named_queries() -> dict[str, str]:
 
 def _run(name: str, **params: Any) -> list[dict[str, Any]]:
     query = _named_queries()[name]
-    with _driver().session() as session:
+    with providers.get_neo4j_driver().session() as session:
         return [record.data() for record in session.run(query, **params)]
 
 
