@@ -7,6 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@adhdquest/contracts": resolve(__dirname, "../contracts/src/index.ts"),
+      "node:crypto": resolve(__dirname, "src/lib/crypto-browser.ts"),
     },
   },
 });
