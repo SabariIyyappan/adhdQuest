@@ -70,11 +70,12 @@ def get_butterbase() -> Any:
 
 @lru_cache(maxsize=1)
 def _real_daytona() -> Any:
-    from daytona_sdk import Daytona  # type: ignore
+    from daytona_sdk import Daytona, DaytonaConfig  # type: ignore
 
     from .config import settings
 
-    return Daytona(api_key=settings.daytona_api_key, api_url=settings.daytona_api_url)
+    config = DaytonaConfig(api_key=settings.daytona_api_key, api_url=settings.daytona_api_url)
+    return Daytona(config=config)
 
 
 def get_daytona() -> Any:
