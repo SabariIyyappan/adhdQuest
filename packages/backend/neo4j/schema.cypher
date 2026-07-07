@@ -21,7 +21,12 @@ CREATE INDEX session_child IF NOT EXISTS FOR (s:Session) ON (s.child_id);
 //   (:Session)-[:CONTAINED_QUESTION]->(:Question)
 //   (:Session)-[:HAD_STRUGGLE]->(:StruggleEvent)-[:ON_CONCEPT]->(:Concept)
 //   (:Concept)-[:REQUIRES_UNDERSTANDING_OF]->(:Concept)   // THE PREREQUISITE GRAPH
-//   (:Child)-[:HAS_MASTERED]->(:Skill)
-//   (:Child)-[:STRUGGLES_WITH]->(:Concept)
+//   (:Child)-[:HAS_MASTERED]->(:Concept)   // dijkstra source set (Pipeline 2)
+//   (:Child)-[:HAS_MASTERED]->(:Skill)     // fine-grained skill confidence (optional)
+//   (:Child)-[:STRUGGLES_WITH]->(:Concept) // scopes GDS centrality/pageRank per child
 //   (:VideoRecommendation)-[:EXPLAINS]->(:Concept)
 //   (:MedicationLog)-[:PRECEDED]->(:Session)
+//
+// GDS: after this schema + the seed files are loaded, run gds_projections.cypher
+// to materialize the in-memory graphs (prereqGraph, childStruggleGraph) that
+// queries.cypher depends on.

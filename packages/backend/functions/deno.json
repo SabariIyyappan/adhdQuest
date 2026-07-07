@@ -1,0 +1,11 @@
+{
+  "$comment": "Deno config for the Butterbase serverless functions. The import map lets the type-only @adhdquest/contracts import resolve during local `deno check`; Butterbase bundles the same package at deploy time.",
+  "imports": {
+    "@adhdquest/contracts": "../../contracts/src/index.ts"
+  },
+  "tasks": {
+    "check": "deno check youtube-lookup/index.ts cognee-qa/index.ts",
+    "deploy:youtube": "butterbase functions deploy youtube-lookup --entry youtube-lookup/index.ts",
+    "deploy:cognee-qa": "butterbase functions deploy cognee-qa --entry cognee-qa/index.ts"
+  }
+}
